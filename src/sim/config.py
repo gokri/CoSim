@@ -10,10 +10,10 @@ APOLLO_PORT = 9999
 egoOn=True
 
 # Name of the Carla map
-worldID = '0712'
+worldID = 'Town10HD_Opt'
 
 # Ego vehicle identifier from Carla blueprint library
-carla_ego_name = 'vehicle.lincoln.mkz_2017'
+carla_ego_name = 'vehicle.ue4.ford.crown'
 
 # Ego spawn position and yaw
 ego_spawn_pos_x = -7.022+118.04-7.5
@@ -27,23 +27,32 @@ ego_spawn_rot_yaw = 322.5
 # ego_spawn_pos_z = 3
 # ego_spawn_rot_yaw = 67.5
 
+## NPC Spawn Point Configuration
+# Set to True to use specific spawn point indices (picked from the spawn point visualiser)
+# Set to False to use random spawn points from the map
+useCustomNPCSpawnPoints = True
+
+# Spawn point indices for each NPC (from no_rendering_mode.py --show-spawn-points visualiser)
+# Edit these after picking points from the 2D map visualiser
+npcSpawnIndices = [85, 90, 99, 103]   # [npcA, npcB, npcC, npcD]
+
 ## Flags for enabling or disabling various features
 # Flag to play scenario defined in scenarioManager
 scenarioPlayerFlag = True
 
 # Flag to send actor ground truth data to Apollo
-actorReaderFlag = True
+actorReaderFlag = False
 
 # Flag to send ego vehicle data to Apollo
-egoReaderFlag = True
+egoReaderFlag = False
 
 # Flag to write ego control command data from Apollo
-egoWriterFlag = True
+egoWriterFlag = False 
 
 # Flags to enable/disable camera and LiDAR sensor output
 # If camera is enabled, in the Apollo docker launch: cyber_launch start modules/drivers/tools/image_decompress/launch/image_decompress.launch
-camReaderFlag = False
-lidarReaderFlag = False
+camReaderFlag = False 
+lidarReaderFlag = False 
 
 '''
 The Carla and Apollo maps are generated from Mathworks RoadRunner.

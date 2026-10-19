@@ -2,7 +2,7 @@ import carla
 import random
 import sys
 import numpy as np
-from bridgeClient import *
+#from bridgeClient import *
 from sensorManager import *
 import math
 import modules
@@ -422,6 +422,7 @@ def scenarioPlayer(CARLA_HOST, CARLA_PORT):
 def main():
 
     client = carla.Client(CONFIG.CARLA_HOST, CONFIG.CARLA_PORT)
+    client.set_timeout(30.0)
     client.load_world(CONFIG.worldID)
     world = client.get_world()
 
@@ -429,8 +430,9 @@ def main():
 
     spectator = world.get_spectator()
 
-    ego_spawn = carla.Transform(carla.Location(x=CONFIG.ego_spawn_pos_x, y=CONFIG.ego_spawn_pos_y, z=3), carla.Rotation(yaw=CONFIG.ego_spawn_rot_yaw))
-
+#   ego_spawn = carla.Transform(carla.Location(x=CONFIG.ego_spawn_pos_x, y=CONFIG.ego_spawn_pos_y, z=3), carla.Rotation(yaw=CONFIG.ego_spawn_rot_yaw))
+    spawn_points = world.get_map().get_spawn_points()
+    ego_spawn = spawn_points[0]
     ego_bp = world.get_blueprint_library().find(CONFIG.carla_ego_name)
     ego_bp.set_attribute('role_name', 'hero')
     ego_vehicle = world.spawn_actor(ego_bp, ego_spawn)

@@ -1,5 +1,5 @@
 import carla
-from bridgeClient import *
+#from bridgeClient import *
 import math
 from time import sleep
 from agents.navigation.controller_wpLoc import VehiclePIDController as VehiclePIDControllerLoc
@@ -28,16 +28,31 @@ class ScenarioManager():
         self.actorList = self.spawnActors()
         
     def spawnActors(self):
+        import config as CONFIG
+        import random
 
-        Spawn_npcA = carla.Transform(carla.Location(x=300.00+0*4.712, y=-214.70-0*3.714, z=2), carla.Rotation(yaw=142.5))
-        Spawn_npcB = carla.Transform(carla.Location(x=300.00+1*4.712, y=-214.70-1*3.714, z=2), carla.Rotation(yaw=142.5))
-        Spawn_npcC = carla.Transform(carla.Location(x=540.0-2*4.712, y=-404.0+2*3.714, z=2), carla.Rotation(yaw=142.5))
-        Spawn_npcD = carla.Transform(carla.Location(x=-226.0, y=198.0, z=1), carla.Rotation(yaw=142.5))
+        spawn_points = self.client.get_world().get_map().get_spawn_points()
 
-        npcA_bp = self.world.get_blueprint_library().find('vehicle.tesla.cybertruck')
-        npcB_bp = self.world.get_blueprint_library().find('vehicle.jeep.wrangler_rubicon')
-        npcC_bp = self.world.get_blueprint_library().find('vehicle.mercedes.coupe_2020')
-        npcD_bp = self.world.get_blueprint_library().find('vehicle.volkswagen.t2_2021')
+        if CONFIG.useCustomNPCSpawnPoints:
+            indices = CONFIG.npcSpawnIndices
+            Spawn_npcA = spawn_points[indices[0]]
+            Spawn_npcB = spawn_points[indices[1]]
+            Spawn_npcC = spawn_points[indices[2]]
+            Spawn_npcD = spawn_points[indices[3]]
+            print(f"[ScenarioManager] Using custom NPC spawn indices: {indices}")
+        else:
+            available = list(range(len(spawn_points)))
+            chosen = random.sample(available, 4)
+            Spawn_npcA = spawn_points[chosen[0]]
+            Spawn_npcB = spawn_points[chosen[1]]
+            Spawn_npcC = spawn_points[chosen[2]]
+            Spawn_npcD = spawn_points[chosen[3]]
+            print(f"[ScenarioManager] Using random NPC spawn indices: {chosen}")
+
+        npcA_bp = self.world.get_blueprint_library().find('vehicle.ue4.ford.crown')
+        npcB_bp = self.world.get_blueprint_library().find('vehicle.ue4.bmw.grantourer')
+        npcC_bp = self.world.get_blueprint_library().find('vehicle.ue4.mercedes.ccc')
+        npcD_bp = self.world.get_blueprint_library().find('vehicle.ue4.audi.tt')
         
         npcA_bp.set_attribute('role_name', 'obstacle')
         npcB_bp.set_attribute('role_name', 'obstacle')
